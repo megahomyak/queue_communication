@@ -1,0 +1,9 @@
+communication:
+* bidirectional through two FIFO queues of bytes
+* everything is a request, there are no "responses" in the raw abstraction
+* responses are just requests to an endpoint that accepts responses. every response marks to what request it is directed, so ids are needed on requests if we need to get a response
+
+possible implementation:
+* {a, b, c} - no response requests
+* {d, e, f} -> request - requests with responses, and each individual request endpoint requires to pass a number to it somewhere in the chain; this would be made convenient for developers through request endpoint wrappers
+* all responses later get to either a unified "response" endpoint or, slightly better, to new individually registered callback endpoints (ensuring parity in contextlessness, especially important for unique request ids). however, with an introduction of a global identifier i wouldn't have to hope for no name collision, so that becomes easier
